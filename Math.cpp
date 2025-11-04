@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 
 #define CURSOR_START "\x1B[H"
 #define CLEAR "\x1B[2J"
@@ -10,7 +11,17 @@
 
 int main(int argc, char* argv[])
 {
-	std::cout << HIDE_CUR << "IDnqibndiqzb" << RESET << "dnqzdqz" << DEFAULT << std::endl;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD mode;
+	GetConsoleMode(hConsole, &mode);
+	SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+	
+	std::cout << HIDE_CUR << RESET;
+
+	std::cout << "Hello World" << std::endl;
+
+	std::cout << SHOW_CUR;
+
 	return 0;
 }
 
