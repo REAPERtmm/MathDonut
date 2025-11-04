@@ -1,13 +1,9 @@
 #include <iostream>
 
-int main()
+int main(int argc, char* argv[])
 {
-	while (true)
-	{
-		std::cout.move(std::ios::left);
-		std::cout << "O";
-		std::cout.clear();
-		std::cout << "|";
-	}
+	std::cout << "Hello World" << std::endl;
+
+	return 0;
 }
 
