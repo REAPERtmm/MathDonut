@@ -1,5 +1,6 @@
-#include <iostream>
-#include <Windows.h>
+
+#include "CustomOutput.h"
+#include "Mesh.h"
 
 #define CURSOR_START "\x1B[H"
 #define CLEAR "\x1B[2J"
@@ -11,35 +12,31 @@
 
 int main(int argc, char* argv[])
 {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	DWORD mode;
-	GetConsoleMode(hConsole, &mode);
-	SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+	CustomOutput::Init(100, 20);
+	
+	CustomOutput::Get() << HIDE_CUR << CLEAR;
 
-	COORD max = GetLargestConsoleWindowSize(hConsole);
-	SHORT w = (100 > max.X) ? max.X : 100;
-	SHORT h = (20 > max.Y) ? max.Y : 20;
+	//char buffer[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//int index = 0;
 
-	SMALL_RECT win = { 0, 0, (SHORT)(w - 1), (SHORT)(h - 1) };
-	// Enlarge buffer first (for growth), then set window.
-	SetConsoleScreenBufferSize(hConsole, { w, h });
-	SetConsoleWindowInfo(hConsole, TRUE, &win);
+	//for(int i = 0; i < 2000; ++i)
+	//{
+	//	CustomOutput::Get() << buffer[index];
+	//	index = (++index) % 26;
+	//}
 
-	std::cout << HIDE_CUR << CLEAR;
+	Mesh mesh;
+	Vertex vertices[] = {
+		{ -1, -1,  0 },
+		{ -1,  1,  0 },
+		{  1, -1,  0 },
+		{  1,  1,  0 }
+	};
+	mesh.Init(vertices, 4);
 
-	char buffer[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	int index = 0;
+	mesh.Display();
 
-	for (int i = 0; i < 100; i++)
-	{
-		for (int j = 0; j < 21; j++)
-		{
-			std::cout << buffer[index];
-			index = (++index) % 27;
-		}
-	}
-
-	std::cout << SHOW_CUR;
+	CustomOutput::Get() << SHOW_CUR;
 
 	return 0;
 }
