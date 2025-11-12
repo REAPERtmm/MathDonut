@@ -2,6 +2,8 @@
 #include <iostream>
 #include <Windows.h>
 
+
+
 class CustomOutput
 {
 	const int WIDTH;
