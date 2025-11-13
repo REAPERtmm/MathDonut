@@ -17,8 +17,8 @@ int main(int argc, char* argv[])
 	//}
 
 	Screen screen(Settings::ScreenWidth, Settings::ScreenHeight);
-
-	screen.Display();
+	screen.SetCameraPosition(-100, -20);
+	screen.SetCameraSize(200, 40);
 
 	Mesh mesh;
 	/*Vertex vertices[] = {
@@ -27,7 +27,12 @@ int main(int argc, char* argv[])
 		{  1, -1,  0 },
 		{  1,  1,  0 }
 	};*/
-	mesh.InitAsRectangle(4, 3, Settings::MeshResolution);
+	mesh.InitAsCircle(8, Settings::MeshResolution);
+	//mesh.Display();
+
+	screen.DrawMesh(mesh);
+
+	screen.Display();
 
 	return 0;
 }

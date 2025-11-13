@@ -26,5 +26,8 @@ public:
 	void InitAsCircle(unsigned int radius, unsigned int resolution);
 	void InitAsHalfCircle(unsigned int radius, unsigned int resolution);
 	void Display();
+
+	Vertex& operator[] (unsigned int i);
+	unsigned int GetPointCount();
 };
 

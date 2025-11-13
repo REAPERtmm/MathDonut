@@ -49,11 +49,15 @@ void Mesh::InitAsRectangle(unsigned int width, unsigned int height, unsigned int
 
 	for (int y = 0; y < Resolution1D; ++y) {
 		for (int x = 0; x < Resolution1D; ++x) {
-			mVertices[y * Resolution1D + x] = {
+			Vertex v = {
 				((float)x * width) / (float)(Resolution1D - 1),
 				((float)y * height) / (float)(Resolution1D - 1),
 				0
 			};
+
+			mVertices[y * Resolution1D + x] = v;
+
+			//std::cout << mVertices[y * Resolution1D + x].x << ", " << mVertices[y * Resolution1D + x].y << ", " << mVertices[y * Resolution1D + x].z << std::endl;
 		}
 	}
 
@@ -111,4 +115,14 @@ void Mesh::Display()
 		std::cout << "\t(" << mVertices[i].x << ", " << mVertices[i].y << ", " << mVertices[i].z << "), " << std::endl;
 	}
 	std::cout << "}" << std::endl;
+}
+
+Vertex& Mesh::operator[](unsigned int i)
+{
+	return mVertices[i];
+}
+
+unsigned int Mesh::GetPointCount()
+{
+	return mVerticesCount;
 }

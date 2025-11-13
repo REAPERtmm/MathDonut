@@ -24,13 +24,22 @@ class Screen{
 	int mWidth;
 	int mHeight;
 
+	int mVirtualWidth;
+	int mVirtualHeight;
+
+	int mPositionX;
+	int mPositionY;
+
 	Pixel* mScreen;
 
 public:
 	Screen(int w, int h);
 	~Screen();
 
+	void SetCameraPosition(int x, int y);
+	void SetCameraSize(int w, int h);
+
 	void SetPixel(int x, int y, char c);
-	void DrawMesh(const Mesh& mesh);
+	void DrawMesh(Mesh& mesh);
 	void Display();
 };
