@@ -17,20 +17,13 @@ int main(int argc, char* argv[])
 	//}
 
 	Screen screen(Settings::ScreenWidth, Settings::ScreenHeight);
-	screen.SetCameraPosition(-100, -20);
-	screen.SetCameraSize(200, 40);
+	screen.SetCameraSize(100, 20);
+	screen.SetCameraNear(3.33f);
 
 	Mesh mesh;
-	/*Vertex vertices[] = {
-		{ -1, -1,  0 },
-		{ -1,  1,  0 },
-		{  1, -1,  0 },
-		{  1,  1,  0 }
-	};*/
-	mesh.InitAsCircle(8, Settings::MeshResolution);
-	//mesh.Display();
-
-	screen.DrawMesh(mesh);
+	mesh.InitAsQuad(4, Settings::MeshResolution);
+	
+	screen.DrawMesh(mesh, 2, 2, 5);
 
 	screen.Display();
 

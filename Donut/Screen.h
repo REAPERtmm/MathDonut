@@ -14,9 +14,8 @@
 
 struct Pixel
 {
-	const char* fg = DEFAULT;
-	const char* bg = DEFAULT;
-	char c = '.';
+	char c = ' ';
+	float iz = 0;
 };
 
 class Screen{
@@ -24,22 +23,24 @@ class Screen{
 	int mWidth;
 	int mHeight;
 
-	int mVirtualWidth;
-	int mVirtualHeight;
+	float mCameraWidth;
+	float mCameraHeight;
+	float mCameraNear;
 
 	int mPositionX;
 	int mPositionY;
 
 	Pixel* mScreen;
-
 public:
 	Screen(int w, int h);
 	~Screen();
 
 	void SetCameraPosition(int x, int y);
-	void SetCameraSize(int w, int h);
+	void SetCameraSize(float w, float h);
+	void SetCameraNear(float dist);
 
-	void SetPixel(int x, int y, char c);
-	void DrawMesh(Mesh& mesh);
+	void SetPixel(float x, float y, float z, char c);
+	void DrawMesh(Mesh& mesh, float x, float y, float z);
 	void Display();
+	void Clear();
 };
