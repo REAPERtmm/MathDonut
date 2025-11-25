@@ -12,7 +12,15 @@ Screen::Screen(int w, int h)
 	mPositionX = DEFAULT_POSITION;
 	mPositionY = 0;
 	mScreen = new Pixel[w * h];
+	std::cout << HIDE_CUR;
 	Clear();
+
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD dwMode;
+	GetConsoleMode(hConsole, &dwMode);
+	dwMode |= ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	!SetConsoleMode(hConsole, dwMode);
+	SetConsoleScreenBufferSize(hConsole, { static_cast<short>(mWidth), static_cast<short>(mHeight) });
 }
 
 Screen::~Screen()
@@ -82,6 +90,7 @@ void Screen::Display()
 
 void Screen::Clear()
 {
+	std::cout << RESET;
 	for (int j = 0; j < mHeight; ++j) {
 		for (int i = 0; i < mWidth; ++i) {
 			Pixel& p = mScreen[i + mWidth * j];

@@ -21,11 +21,19 @@ int main(int argc, char* argv[])
 	screen.SetCameraNear(3.33f);
 
 	Mesh mesh;
-	mesh.InitAsQuad(4, Settings::MeshResolution);
-	
-	screen.DrawMesh(mesh, 2, 2, 5);
+	mesh.InitAsCircle(8, Settings::MeshResolution);
 
-	screen.Display();
+	int x_pos = 2;
+
+	while (true)
+	{
+		screen.Clear();
+		screen.DrawMesh(mesh, x_pos, 10, 5);
+		screen.Display();
+		Sleep(200);
+		x_pos = (x_pos + 1) % 50 + 2;
+	}
+
 
 	return 0;
 }
