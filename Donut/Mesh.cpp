@@ -107,6 +107,36 @@ void Mesh::InitAsHalfCircle(unsigned int radius, unsigned int Resolution1D)
 	mResolution = Resolution1D * Resolution1D;
 }
 
+void Mesh::InitAsTorus(unsigned int innerradius, unsigned int radius, unsigned int resolution)
+{
+	unsigned int r1 = resolution;
+	unsigned int r2 = r1 * resolution;
+
+	mVertices = new Vertex[r2];
+	mVerticesCount = r2;
+	mResolution = r2;
+
+	for (int i = 0; i < r1; ++i)
+	{
+		float inner_angle = 2 * PI * (float)(i - 1) / r1;
+		float _inner_cos = cos(inner_angle);
+		float _inner_sin = sin(inner_angle);
+
+		for (int j = 0; j < r1; ++j) {
+
+			float angle = 2 * PI * (float)(j - 1) / r1;
+			float _cos = cos(angle);
+			//float _sin = sin(angle);
+			
+			mVertices[i * r1 + j].x = innerradius * _inner_cos + radius * _cos * _inner_cos;
+			mVertices[i * r1 + j].y = innerradius * _inner_sin + radius * _cos * _inner_sin;
+			mVertices[i * r1 + j].z = radius * sin(angle);
+		}
+
+	}
+
+}
+
 
 void Mesh::Display()
 {
@@ -125,4 +155,45 @@ Vertex& Mesh::operator[](unsigned int i)
 unsigned int Mesh::GetPointCount()
 {
 	return mVerticesCount;
+}
+
+void Mesh::Rotate(float angle, Axis axis) {
+
+	for (uint64_t i = 0; i < mVerticesCount; ++i) {
+		mVertices[i].Rotate(angle, axis);
+	}
+}
+
+
+void Vertex::Rotate(float angle, Axis axis)
+{
+	float _cos = cos(angle);
+	float _sin = sin(angle);
+
+	switch (axis)
+	{
+	case Axis::X: {
+		float _y = _cos * y - _sin * z;
+		float _z = _sin * y + _cos * z;
+		y = _y;
+		z = _z;
+		break;
+	}
+	case Axis::Y: {
+		float _x = _cos * x - _sin * z;
+		float _z = _sin * x + _cos * z;
+		x = _x;
+		z = _z;
+		break;
+	}
+	case Axis::Z: {
+		float _x = _cos * x - _sin * y;
+		float _y = _sin * x + _cos * y;
+		x = _x;
+		y = _y;
+		break;
+	}
+	default:
+		break;
+	}
 }

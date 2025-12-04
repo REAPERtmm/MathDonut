@@ -70,7 +70,7 @@ void Screen::DrawMesh(Mesh& mesh, float x, float y, float z)
 		float wz = vertex.z + z;
 
 		float x = (mCameraNear * wx / wz); // * mCameraWidth;
-		float y = (mCameraNear * wy / wz); // * mCameraHeight;
+		float y = ((mCameraNear * wy / wz) * 0.5f); // * mCameraHeight;
 		float z = wz;
 
 		SetPixel(x, y, z, Settings::MeshForeground);
