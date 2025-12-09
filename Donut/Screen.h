@@ -39,6 +39,7 @@ public:
 	void SetCameraSize(float w, float h);
 	void SetCameraNear(float dist);
 
+	char ComputeLight(float nx, float ny, float nz);
 	void SetPixel(float x, float y, float z, char c);
 	void DrawMesh(Mesh& mesh, float x, float y, float z);
 	void Display();

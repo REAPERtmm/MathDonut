@@ -124,13 +124,24 @@ void Mesh::InitAsTorus(unsigned int innerradius, unsigned int radius, unsigned i
 
 		for (int j = 0; j < r1; ++j) {
 
+			int index = i * r1 + j;
 			float angle = 2 * PI * (float)(j - 1) / r1;
 			float _cos = cos(angle);
-			//float _sin = sin(angle);
+			float _sin = sin(angle);
 			
-			mVertices[i * r1 + j].x = innerradius * _inner_cos + radius * _cos * _inner_cos;
-			mVertices[i * r1 + j].y = innerradius * _inner_sin + radius * _cos * _inner_sin;
-			mVertices[i * r1 + j].z = radius * sin(angle);
+			mVertices[index].x = (innerradius + radius * _cos) * _inner_cos;
+			mVertices[index].y = (innerradius + radius * _cos) * _inner_sin;
+			mVertices[index].z = radius * _sin;
+
+			mVertices[index].nx = mVertices[index].x - innerradius * _inner_cos;
+			mVertices[index].ny = mVertices[index].y - innerradius * _inner_sin;
+			mVertices[index].nz = mVertices[index].z;
+
+			float length = sqrt(mVertices[index].nx * mVertices[index].nx + mVertices[index].ny * mVertices[index].ny + mVertices[index].nz * mVertices[index].nz);
+
+			mVertices[index].nx /= length;
+			mVertices[index].ny /= length;
+			mVertices[index].nz /= length;
 		}
 
 	}
@@ -175,22 +186,34 @@ void Vertex::Rotate(float angle, Axis axis)
 	case Axis::X: {
 		float _y = _cos * y - _sin * z;
 		float _z = _sin * y + _cos * z;
+		float _ny = _cos * ny - _sin * nz;
+		float _nz = _sin * ny + _cos * nz;
 		y = _y;
 		z = _z;
+		ny = _ny;
+		nz = _nz;
 		break;
 	}
 	case Axis::Y: {
 		float _x = _cos * x - _sin * z;
 		float _z = _sin * x + _cos * z;
+		float _nx = _cos * nx - _sin * nz;
+		float _nz = _sin * nx + _cos * nz;
 		x = _x;
 		z = _z;
+		nx = _nx;
+		nz = _nz;
 		break;
 	}
 	case Axis::Z: {
 		float _x = _cos * x - _sin * y;
 		float _y = _sin * x + _cos * y;
+		float _nx = _cos * nx - _sin * ny;
+		float _ny = _sin * nx + _cos * ny;
 		x = _x;
 		y = _y;
+		nx = _nx;
+		ny = _ny;
 		break;
 	}
 	default:

@@ -45,6 +45,14 @@ void Screen::SetCameraNear(float dist)
 	mCameraNear = dist;
 }
 
+char Screen::ComputeLight(float nx, float ny, float nz)
+{
+	static char LIGHTS[] = { '.', '*', '#', '$', '@' };
+	static int LIGHT_COUNT = 5;
+	if (ny >= 0) return '.';
+	return LIGHTS[(int)(-ny * LIGHT_COUNT)];
+}
+
 void Screen::SetPixel(float x, float y, float z, char c)
 {
 	if (x < 0 || y < 0 || x >= mWidth || y >= mHeight) {
@@ -69,11 +77,11 @@ void Screen::DrawMesh(Mesh& mesh, float x, float y, float z)
 		float wy = vertex.y + y;
 		float wz = vertex.z + z;
 
-		float x = (mCameraNear * wx / wz); // * mCameraWidth;
-		float y = ((mCameraNear * wy / wz) * 0.5f); // * mCameraHeight;
+		float x = Settings::ScreenWidth * wx / mCameraWidth; 
+		float y = 0.5f * Settings::ScreenHeight * wy / mCameraHeight; 
 		float z = wz;
 
-		SetPixel(x, y, z, Settings::MeshForeground);
+		SetPixel(x, y, z, ComputeLight(vertex.nx, vertex.ny, vertex.nz));
 	}
 }
 
@@ -90,7 +98,7 @@ void Screen::Display()
 
 void Screen::Clear()
 {
-	std::cout << RESET;
+	std::cout << CURSOR_START;
 	for (int j = 0; j < mHeight; ++j) {
 		for (int i = 0; i < mWidth; ++i) {
 			Pixel& p = mScreen[i + mWidth * j];

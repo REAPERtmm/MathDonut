@@ -3,6 +3,9 @@
 #include "Screen.h"
 
 
+#define ZOOM 2
+
+
 int main(int argc, char* argv[])
 {
 	Settings::InitWithArgs(argc, argv);
@@ -17,19 +20,20 @@ int main(int argc, char* argv[])
 	//}
 
 	Screen screen(Settings::ScreenWidth, Settings::ScreenHeight);
-	screen.SetCameraSize(100, 20);
-	screen.SetCameraNear(3.33f);
+	screen.SetCameraSize(Settings::ScreenWidth * ZOOM, Settings::ScreenHeight * ZOOM);
 
 	Mesh mesh;
-	mesh.InitAsTorus(20, 8, Settings::MeshResolution);
+	mesh.InitAsTorus(25, 10, 256);
+	//mesh.InitAsRectangle(20, 20, 128);
 
 	int x_pos = 2;
 
 	while (true)
 	{
 		screen.Clear();
-		mesh.Rotate(PI / 4, Axis::Y);
-		screen.DrawMesh(mesh, 40, 40, 20);
+		mesh.Rotate(PI / 16, Axis::Y);
+		mesh.Rotate(PI / 16, Axis::Z);
+		screen.DrawMesh(mesh, 0.5f * Settings::ScreenWidth * ZOOM, Settings::ScreenHeight * ZOOM, 20);
 		screen.Display();
 		Sleep(50);
 	}
